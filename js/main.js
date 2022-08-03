@@ -111,7 +111,7 @@ function verLista(){
 
         salida += "\n\nTotal a Pagar: $" + total_pagar.toFixed(0);
     } else {
-        salida = "Tu Carrito esta Vacio"; 
+        salida = "Tu lista esta vacia!!"; 
     }
     alert (salida);
 }
