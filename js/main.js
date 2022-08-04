@@ -1,4 +1,4 @@
-const articulos = [
+/* const articulos = [
     {nombre:"Kaiken Estate Malbec", id:1, precio: 1250},
     {nombre:"Las Perdices Malbec", id:2, precio: 1100},
     {nombre:"Vistalba Tomero Cabernet Sauvignon", id:3, precio: 1250},
@@ -115,4 +115,5 @@ function verLista(){
     }
     alert (salida);
 }
-verLista();
+verLista(); */
+
