@@ -1,15 +1,18 @@
 const articulos = [
-    {nombre:"Kaiken Estate Malbec", id:1, precio: 1250,imagen:"Kaiken Malbec.jpg"},
-    {nombre:"Killka Malbec", id:2, precio: 1100,imagen:"Killka-Malbec.png"},
-    {nombre:"Vistalba Tomero Cabernet Sauvignon", id:3, precio: 1250,imagen:"Tomero Cabernet.jpg"},
-    {nombre:"AlbaFlor Cabernet Sauvignon", id:4, precio: 1300,imagen:"AlbaFlor Cabernet.jpg"},
-    {nombre:"La Flor Sauvignon Blanc", id:5, precio: 1100,imagen:"La Flor Sauvignon Blanc.png"},
-    {nombre:"Las Perdices Torrontes", id:6, precio: 1100,imagen:"Las Perdices Dulce Torrontes.jpg"},
-    {nombre:"Santa Julia Chenin Dulce", id:7, precio: 820,imagen:"Chenin Dulce.png"},
-    {nombre:"Norton Cosecha Tardia", id:8, precio: 690,imagen:"Norton Cosecha Tardia.png"},
-    {nombre:"La Flor Rose", id:9, precio: 1150,imagen:"La Flor Rose.png"},
-    {nombre:"Kaiken Estate Rose", id:10, precio: 1250,imagen:"Kaiken Rose.jpg"}
+    {nombre:"Kaiken Estate", id:1, precio: 1250, imagen:"Kaiken-Malbec.png",varietal: "MALBEC"},
+    {nombre:"Killka", id:2, precio: 1100, imagen:"Killka-Malbec.png",varietal: "MALBEC"},
+    {nombre:"Cordero con Piel de Lobo ", id:3, precio: 990, imagen:"Cordero-Lobo.png",varietal: "MALBEC"},
+    {nombre:"Mil Piedras ", id:4, precio: 1250, imagen:"Mil-Piedras.png",varietal: "CABERNET SAUVIGNON"},
+    {nombre:"AlbaFlor", id:5, precio: 1300, imagen:"Albaflor-Cabernet.png",varietal: "CABERNET SAUVIGNON"},
+    {nombre:"Trivento Reserve", id:6, precio: 1300, imagen:"Trivento-Reserve.png",varietal: "CABERNET SAUVIGNON"},
+    {nombre:"La Flor Sauvignon Blanc", id:7, precio: 1100, imagen:"La-Flor-Blanc.png",varietal: "BLANCO"},
+    {nombre:"Crios Torrontes", id:8, precio: 1100, imagen:"crios.png",varietal: "BLANCO"},
+    {nombre:"Santa Julia Chenin Dulce", id:9, precio: 820, imagen:"Santa-Julia-Chenin-Dulce.png",varietal: "BLANCO"},
+    {nombre:"Norton Cosecha Tardia", id:10, precio: 690, imagen:"Norton-Tardio.png",varietal: "BLANCO"},
+    {nombre:"La Flor", id:11, precio: 1150, imagen:"La-Flor-Rose.png",varietal: "ROSE"},
+    {nombre:"Kaiken Malbec", id:12, precio: 1250, imagen:"Kaiken-Rose.png",varietal: "ROSE"}
 ];
+
 const pago = [
     {denominacion:"Debito", id:1},
     {denominacion:"Credito", id:2},
@@ -17,32 +20,6 @@ const pago = [
 ];
 
 const lista = [];
-
-let entrada = 'Tienda de vinos "Wines of Mendoza"';
-
-    alert(entrada);
-
-    console.log(entrada);
-
-
-function ingreso() {
-    let edad = parseInt(prompt("Por Favor Ingresa tu edad: "));
-
-    if (edad < 18) {
-        alert("Eres Menor de edad, no puedes ingresar al sitio");
-        console.log("Eres Menor de edad, no puedes ingresar al sitio");
-        return;
-    }
-    else {
-        let nombre = prompt ("Ingresa tu Nombre: ");
-        alert("Bienvenido"+ " " + nombre);
-        console.log("Bienvenido "+ " " + nombre); 
-        let ingreso = stock();
-        elegirVinos(ingreso);
-        
-    }
-}
-ingreso();
 
 class Producto {
     constructor(vino) {
@@ -67,124 +44,81 @@ class Pagar {
     }
 }
 
-function stock(){
-
-    let ingreso =("Esta es nuestra seleccion de vinos para vos: ")
-
-for (const vinos of articulos) {
-    ingreso += "\n" + " # " + vinos.id + " - " + vinos.nombre + ": $" + vinos.precio;
-}
-    console.log(ingreso);
-    return (ingreso);
-}
-
 function buscarVino(id) {
     return articulos.find(varietal => varietal.id == id);
 }
+
 function buscarPago(id) {
     return pago.find(cash => cash.id == id);
 }
 
-function elegirVinos(){
-    let salida = "Ingrese el numero de vino que deseas comprar:" + "\n" + "Toca aceptar para agregarlo a tu carrito o cancelar para continuar" + "\n";
+function stock() {
+    
+    let contenido = "";
 
-    for (let vinos of articulos) {
-        salida += vinos.id + " - " + vinos.nombre + " : $" + vinos.precio + "\n";
-    }
+    for(vino of articulos){
+        contenido +=`<div id="${vino.id}" class= "col-md-3 container-tarjeta">
+        <div class="card text-center text-white bg-secondary mb-3">
+        <img src="image/${vino.imagen}" class="card-img-top" alt="${vino.nombre}">
+        <div class="card-body">
+          <h6 class="card-title">${vino.varietal}</h6>
+          <p class="card-text">${vino.nombre}</p>
+          <p class="card-text">$ ${vino.precio}</p>
+          <button type="button" class="btn btn-success btn-agregar">Agregar al Carrito</button>
+        </div>
+      </div>
+      </div>`;
 
-    let id_vinos= 0;
+    };
+    document.getElementById("stock").innerHTML = contenido;
+}
 
-    while (id_vinos != null) {
+function agregarAlCarrito () {
 
-        let id_vinos = prompt(salida);
+    const botones = document.querySelectorAll(".btn-agregar");
 
-        if (id_vinos != null) {
-            id_vinos = parseInt(id_vinos);
+    botones.forEach((boton)=> {
+        boton.addEventListener("click", (e) =>{
+        let itemId = parseInt(e.target.closest(".container-tarjeta").id);
 
-            if (isNaN(id_vinos) || id_vinos<1 || id_vinos > articulos.length){
-                alert("No ingresaste un valor valido, debes seleccionar entre 1 y " + articulos.length) ;
-            } else{
-                let tuSeleccion = buscarVino(id_vinos);
+        let item = articulos.find((vino) => vino.id === itemId);
 
-                lista.push(tuSeleccion);
-            }
-        } else {
-            break;
-        }
-    }
-
+        lista.push(item);
+        verCarrito ();
         console.log(lista);
+    })
+    
+    })
+
 }
-function verLista(){
+ function verCarrito (){
 
-    let salida = "";
+    let contenido= "";
 
-    if (lista.length > 0, lista.length < 4){
-
-        salida = "Tu Compra:\n\n";
-
-        let total_pagar = 0;
-
-        for (let seleccion_lista of lista) {
-
-            let producto = new Producto(seleccion_lista);
-
-            total_pagar += producto.precio2;
-
-            console.log("Precio Final: $" + producto.precio2);
-
-            salida += producto.id + " - " + producto.nombre + " : $" + producto.precio2 + "\n";
-        }
-
-        salida += "\n\nTotal a Pagar: $ " + total_pagar.toFixed(0);
+    for(item of lista){
+            contenido +=`
+            <table class="table bg-secondary text-center">
+            <h5 class = "bg-secondary text-center text-white">RESUMEN DE COMPRA</h5>
+            <thead>
+              <tr>
+                <th class="text-white">PRODUCTO</th>
+                <th class="text-white">VARIETAL</th>
+                <th class="text-white">PRECIO</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>${item.nombre}</td>
+                <td>${item.varietal}</td>
+                <td>$ ${item.precio}</td>
+                <button type="button" class="btn btn-success">FINALIZAR COMPRA</button>
+              </tr> 
+            </tbody>
+          </table>`;
+        };
+        document.getElementById("extras").innerHTML = contenido;
     }
-    else if (lista.length >= 4){
+ 
 
-        salida = "Tu Compra:\n\n";
-
-        let total_pagar = 0;
-        let dto_total = 0;
-
-        for (let seleccion_lista of lista) {
-
-            let producto = new Producto(seleccion_lista);
-            
-            producto.calcularDescuento();
-
-            total_pagar += (producto.precio2 - producto.precio1);
-
-            dto_total = (producto.precio1 * lista.length);
-
-            console.log("El descuento obtenido es: $" + producto.precio1);
-
-            console.log("Precio Final: $" + (producto.precio2 - producto.precio1));
-
-            salida += producto.id + " - " + producto.nombre + " : $" + (producto.precio2 - producto.precio1) + "\n";
-        }
-
-        salida += "\n\nTotal a Pagar: $ " + total_pagar.toFixed(2) + "\n" + "Descuentos obtenidos: $ " + dto_total.toFixed(2);
-    }  else {
-        salida = "Tu lista esta vacia!!"; 
-    }
-    alert (salida);
-
-   let finalizar =("Selecciona el medio de pago con el que deseas abonar " + "\n")
-
-   for (let medioPago of pago) {
-    finalizar += "\n" + medioPago.id + " - " + medioPago.denominacion + "\n";
-    }
-
-    console.log(finalizar);
-
-    let resumen = prompt (finalizar);
-
-    let tuPago = pago[resumen-1].denominacion;
-
-    alert ("\n" + salida + "\n" + "Abonas con: " + tuPago + "\n\n" + "Pulsa Aceptar para confirmar");
-
-    alert ("Estamos procesando tu compra, en breve recibiras la de confirmacion de tu pedido!!!"+ "\n\n" + "Muchas Gracias por elegirnos!!!");
-}
-verLista();
-
-
-
+stock();
+agregarAlCarrito();
